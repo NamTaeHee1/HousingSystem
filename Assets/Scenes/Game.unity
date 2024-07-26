@@ -152,9 +152,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 011792e9ffa942a4e89d486547acfaef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 349157241}
+  tilemap: {fileID: 903834408}
   clickedTile: {fileID: 0}
-  tableTile: {fileID: 11400000, guid: 5ead17d471c9fc34d8395eead98c0b7d, type: 2}
+  tableTile: {fileID: 11400000, guid: 64204c2e76f70124daf530dfabb65bf4, type: 2}
+  tilemapSize:
+    minPos: {x: 0, y: 0, z: 0}
+    maxPos: {x: 0, y: 0, z: 0}
 --- !u!4 &340174784
 Transform:
   m_ObjectHideFlags: 0
@@ -1325,7 +1328,7 @@ GameObject:
   - component: {fileID: 610631757}
   - component: {fileID: 610631756}
   m_Layer: 0
-  m_Name: Interior_Ground
+  m_Name: Interior_Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
