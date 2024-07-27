@@ -18,7 +18,7 @@ public class TileTest : MonoBehaviour
 
 	private Camera mainCam;
 
-	[SerializeField][Header("¼±ÅÃÇÑ Tile")]
+	[SerializeField][Header("ì„ íƒí•œ Tile")]
 	private TileBase clickedTile;
 
 	[Header("Table Tile")]
