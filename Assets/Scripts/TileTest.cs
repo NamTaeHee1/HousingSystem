@@ -4,13 +4,6 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[System.Serializable]
-public struct TilemapSize
-{
-	public Vector3Int minPos;
-	public Vector3Int maxPos;
-}
-
 public class TileTest : MonoBehaviour
 {
 	[SerializeField]
@@ -38,77 +31,22 @@ public class TileTest : MonoBehaviour
 		{
 			Vector3 mousePos = Input.mousePosition;
 			Vector3 worldPos = mainCam.ScreenToWorldPoint(mousePos);
+            worldPos.z = 0;
 
 			Vector3Int tilePos = tilemap.WorldToCell(worldPos);
-			tilePos.z = 0;
 
 			TileBase selectedTile = tilemap.GetTile(tilePos);
 
-			if(selectedTile != null)
-			{
-				Debug.Log("Clicked Tile: " + selectedTile.name + " at Position: " + tilePos);
+            if (selectedTile != null)
+            {
+                clickedTile = selectedTile;
 
-				clickedTile = selectedTile;
+                tilemap.SetColor(tilePos, Color.red);
 
-				tilemap.SetColor(tilePos, Color.red);
-			}
-			else
-			{
-				Debug.Log($"No Tile at Position: {tilePos}, {worldPos}");
-			}
+                Debug.Log($"WorldPos : {tilemap.CellToWorld(tilePos)}");
+            }
 
 			BoundsInt bounds = tilemap.cellBounds;
-
-			Debug.Log($"Bounds.MinX : {bounds.xMin}, Bounds.MaxX : {bounds.xMax}");
-			Debug.Log($"Bounds MinX MinY WorldToCell : {tilemap.WorldToCell(new Vector3(bounds.xMin, bounds.yMin))}");
-
-			UpdateTilemapSize();
-		}
-	}
-
-	private const string FloorName = "floor";
-
-	private void UpdateTilemapSize()
-	{
-		BoundsInt bounds = tilemap.cellBounds;
-		int i, j;
-		Vector3Int tilePos;
-		TileBase tile;
-
-		for (i = bounds.xMin; i < bounds.xMax; i++)
-		{
-			if (tilemapSize.minPos != Vector3Int.zero) break;
-
-			for(j = bounds.yMin; j < bounds.yMax; j++)
-			{
-				tilePos = new Vector3Int(i, j);
-				tile = tilemap.GetTile(tilePos);
-
-				if (tile != null && tile.name.Contains(FloorName))
-				{
-					tilemapSize.minPos = tilePos;
-
-					break;
-				}
-			}
-		}
-
-		for(i = bounds.xMax; i > bounds.xMin; i--)
-		{
-			if (tilemapSize.maxPos != Vector3Int.zero) break;
-
-			for(j = bounds.yMax; j > bounds.yMin; j--)
-			{
-				tilePos = new Vector3Int(i, j);
-				tile = tilemap.GetTile(tilePos);
-
-				if (tile != null && tile.name.Contains(FloorName))
-				{
-					tilemapSize.maxPos = tilePos;
-
-					break;
-				}
-			}
 		}
 	}
 }

@@ -27,11 +27,9 @@ public class BuildingSystem : MonoBehaviour
 	{
 		if (!Input.GetMouseButtonDown(0)) return;
 
-		Vector3 mousePos = Input.mousePosition;
-		Vector3 worldPos = mainCam.ScreenToWorldPoint(mousePos);
-
+		Vector3 worldPos = mainCam.ScreenToWorldPoint(Input.mousePosition);
+        worldPos.z = 0;
 		Vector3Int tilePos = interiorTilemap.WorldToCell(worldPos);
-		tilePos.z = 0;
 
         clickedFurniture = interiorTilemap.GetTile(tilePos);
     }
