@@ -18,8 +18,6 @@ public class TileTest : MonoBehaviour
 	[SerializeField]
 	private TileBase tableTile;
 
-	public TilemapSize tilemapSize;
-
 	private void Start()
 	{
 		mainCam = Camera.main;

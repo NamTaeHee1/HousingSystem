@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
 	private Camera mainCam;
 
-	private void Awake()
+	private void Start()
 	{
 		mainCam = Camera.main;
 	}
@@ -15,9 +14,13 @@ public class CameraController : MonoBehaviour
 	private void Update()
 	{
 		MoveCamera();
+
+        CameraZoomControl();
 	}
 
-	private Vector3 moveDir, startPos;
+    #region Camera Movement
+
+    private Vector3 moveDir, startPos;
 
 	private void MoveCamera()
 	{
@@ -50,11 +53,44 @@ public class CameraController : MonoBehaviour
     {
         TilemapManager Tilemap = Managers.Tilemap;
 
-        TilemapSize size = Tilemap.tilemapSize;
+        Vector3[] vertexWorldPos = new Vector3[Tilemap.tilemapVertex.Length];
 
-        Vector3 min = size.ConvertToWorldPos(Tilemap.buildingTilemap, size.minPos);
-        Vector3 max = size.ConvertToWorldPos(Tilemap.buildingTilemap, size.maxPos);
+        for(int i = 0; i < vertexWorldPos.Length; i++)
+        {
+            vertexWorldPos[i] = Tilemap.buildingTilemap.CellToWorld(Tilemap.tilemapVertex[i]);
+        }
 
-        Debug.Log($"min : {min}, max : {max}");
+        Vector3 camPos = transform.position;
+
+        camPos.x = Mathf.Clamp(camPos.x,
+                               vertexWorldPos[(int)ETilemapVertexDir.LEFT].x,
+                               vertexWorldPos[(int)ETilemapVertexDir.RIGHT].x);
+
+        camPos.y = Mathf.Clamp(camPos.y,
+                               vertexWorldPos[(int)ETilemapVertexDir.DOWN].y,
+                               vertexWorldPos[(int)ETilemapVertexDir.UP].y);
+
+        transform.position = camPos;
     }
+
+    #endregion
+
+    #region Camera Zoom
+
+    [SerializeField] private float zoomValue;
+
+    [SerializeField] private float minZoomValue, maxZoomValue;
+
+    [SerializeField] private float zoomSpeed;
+
+    public void CameraZoomControl()
+    {
+        zoomValue = Mathf.Lerp(zoomValue, zoomValue - Input.mouseScrollDelta.y, Time.deltaTime * zoomSpeed);
+
+        zoomValue = Mathf.Clamp(zoomValue, minZoomValue, maxZoomValue);
+
+        mainCam.orthographicSize = zoomValue;
+    }
+
+    #endregion
 }

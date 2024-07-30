@@ -3,22 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[System.Serializable]
-public struct TilemapSize
+public enum ETilemapVertexDir : byte
 {
-    public Vector3Int minPos;
-    public Vector3Int maxPos;
-
-    public Vector3 ConvertToWorldPos(Tilemap tilemap, Vector3Int pos)
-    {
-        return tilemap.CellToWorld(pos);
-    }
+    UP = 0,
+    DOWN,
+    LEFT,
+    RIGHT,
+    COUNT
 }
 
 public class TilemapManager : MonoBehaviour
 {
-    [Header("Tilemap Size")]
-    public TilemapSize tilemapSize;
+    [Header("Tilemap Vertex")]
+    public Vector3Int[] tilemapVertex = new Vector3Int[(int)ETilemapVertexDir.COUNT];
 
     [Header("Building Tilemap")]
     public Tilemap buildingTilemap;
@@ -34,12 +31,14 @@ public class TilemapManager : MonoBehaviour
     {
         BoundsInt bounds = buildingTilemap.cellBounds;
         int i, j;
-        Vector3Int tilePos;
+        Vector3Int tilePos, min, max;
         TileBase tile;
+
+        min = max = Vector3Int.zero;
 
         for (i = bounds.xMin; i < bounds.xMax; i++)
         {
-            if (tilemapSize.minPos != Vector3Int.zero) break;
+            if (min != Vector3Int.zero) break;
 
             for (j = bounds.yMin; j < bounds.yMax; j++)
             {
@@ -48,7 +47,7 @@ public class TilemapManager : MonoBehaviour
 
                 if (tile != null && tile.name.Contains(FloorName))
                 {
-                    tilemapSize.minPos = tilePos;
+                    min = tilePos;
 
                     break;
                 }
@@ -57,7 +56,7 @@ public class TilemapManager : MonoBehaviour
 
         for (i = bounds.xMax; i > bounds.xMin; i--)
         {
-            if (tilemapSize.maxPos != Vector3Int.zero) break;
+            if (max != Vector3Int.zero) break;
 
             for (j = bounds.yMax; j > bounds.yMin; j--)
             {
@@ -66,11 +65,16 @@ public class TilemapManager : MonoBehaviour
 
                 if (tile != null && tile.name.Contains(FloorName))
                 {
-                    tilemapSize.maxPos = tilePos;
+                    max = tilePos;
 
                     break;
                 }
             }
         }
+
+        tilemapVertex[(int)ETilemapVertexDir.UP] = max;
+        tilemapVertex[(int)ETilemapVertexDir.DOWN] = min;
+        tilemapVertex[(int)ETilemapVertexDir.LEFT] = new Vector3Int(min.x, max.y);
+        tilemapVertex[(int)ETilemapVertexDir.RIGHT] = new Vector3Int(max.x, min.y);
     }
 }

@@ -201,9 +201,6 @@ MonoBehaviour:
   tilemap: {fileID: 903834408}
   clickedTile: {fileID: 0}
   tableTile: {fileID: 11400000, guid: 64204c2e76f70124daf530dfabb65bf4, type: 2}
-  tilemapSize:
-    minPos: {x: 0, y: 0, z: 0}
-    maxPos: {x: 0, y: 0, z: 0}
 --- !u!4 &340174784
 Transform:
   m_ObjectHideFlags: 0
@@ -316,6 +313,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d50f55037ec37cc4fa123092f4e8973d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zoomValue: 5
+  minZoomValue: 2
+  maxZoomValue: 7
+  zoomSpeed: 20
 --- !u!1 &610631754
 GameObject:
   m_ObjectHideFlags: 0
@@ -4687,9 +4688,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1b2ca2e2a110ba4db1b06aad3ada0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemapSize:
-    minPos: {x: 0, y: 0, z: 0}
-    maxPos: {x: 0, y: 0, z: 0}
+  tilemapVertex:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
   buildingTilemap: {fileID: 903834408}
 --- !u!1 &4491747063218590522
 GameObject:
